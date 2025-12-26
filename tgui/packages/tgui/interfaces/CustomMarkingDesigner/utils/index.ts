@@ -21,3 +21,4 @@ export * from './canvasUi';
 export * from './savingHandlers';
 export * from './strokeGeometry';
 export * from './bodyMarkings';
+export * from './basicAppearance';

@@ -11,7 +11,7 @@ import { BoxProps, computeBoxClassName, computeBoxProps } from './Box';
 
 interface SectionProps extends BoxProps {
   readonly className?: string;
-  readonly title?: string | InfernoElement<string>;
+  readonly title?: InfernoNode;
   readonly buttons?: InfernoNode;
   readonly fill?: boolean;
   readonly fitted?: boolean;

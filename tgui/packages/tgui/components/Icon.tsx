@@ -7,7 +7,7 @@
  */
 
 import { classes, pureComponentHooks } from 'common/react';
-import { InfernoNode } from 'inferno';
+import type { Inferno, InfernoNode } from 'inferno';
 import { BoxProps, computeBoxClassName, computeBoxProps } from './Box';
 
 const FA_OUTLINE_REGEX = /-o$/;
@@ -18,7 +18,10 @@ type IconPropsUnique = {
   readonly spin?: boolean;
   readonly className?: string;
   readonly rotation?: number;
-  readonly style?: string | CSSProperties;
+  readonly style?: Exclude<
+    Inferno.HTMLAttributes<HTMLElement>['style'],
+    string | null | undefined
+  >;
 };
 
 export type IconProps = IconPropsUnique & BoxProps;

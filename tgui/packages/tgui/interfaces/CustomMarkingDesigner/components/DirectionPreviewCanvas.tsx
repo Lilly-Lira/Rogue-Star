@@ -546,7 +546,7 @@ export class DirectionPreviewCanvas extends Component<DirectionPreviewCanvasProp
             width={canvasWidth}
             height={canvasHeight}
             style={{
-              imageRendering: 'pixelated',
+              'image-rendering': 'pixelated',
               position: 'absolute',
               left: `${offsetLeft}px`,
               top: `${offsetTop}px`,

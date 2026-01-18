@@ -1,8 +1,8 @@
-import { SFC } from 'inferno';
+import type { Inferno } from 'inferno';
 import { Box } from './Box';
 
 // The cost of flexibility and prettiness.
-export const StyleableSection: SFC<{
+export const StyleableSection: Inferno.SFC<{
   style?;
   titleStyle?;
   textStyle?;

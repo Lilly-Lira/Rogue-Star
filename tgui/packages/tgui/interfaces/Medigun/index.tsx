@@ -5,13 +5,14 @@ import { Stack, Tabs } from '../../components';
 import { Window } from '../../layouts';
 import type { Data } from './types';
 import { MedigunContent } from './MedigunTabs/MedigunContent';
+import type { InfernoNode } from 'inferno';
 
 export const Medigun = (props, context) => {
   const { data } = useBackend<Data>(context);
   const { maintenance, examine_data } = data;
   const [selectedTab, setSelectedTab] = useLocalState(context, 'mediGunTab', 0);
 
-  const tab: InfernoElement<JSX.Element>[] = [];
+  const tab: InfernoNode[] = [];
   tab[0] = <MedigunContent smodule={examine_data.smodule} />;
   tab[1] = (
     <MedigunParts examineData={examine_data} maintenance={maintenance} />

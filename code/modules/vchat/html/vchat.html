@@ -138,10 +138,12 @@
 								<!--RS Add Start: Font selection (Lira, September 2025)-->
 								<div class="field" title="Font family stack used for chat text">
 									<label for="fontfamily-select">Font Family</label>
-									<select id="fontfamily-select" class="ui dropdown" v-model="fontfamily">
-										<option v-for="option in fontfamily_options" :key="option.value" :value="option.value">{{ option.label }}</option>
-									</select>
-									<button class="ui button" type="button" @click="reset_fontfamily">Reset</button>
+									<div class="fontfamily-controls">  <!--Tweaked for Vue 3-->
+										<select id="fontfamily-select" class="ui dropdown" v-model="fontfamily">
+											<option v-for="option in fontfamily_options" :key="option.value" :value="option.value">{{ option.label }}</option>
+										</select>
+										<button class="ui button fontfamily-reset" type="button" @click="reset_fontfamily">Reset</button>
+									</div>
 								<!--RS Add End-->
 								</div>
 							</div>

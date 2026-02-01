@@ -181,10 +181,12 @@ function start_vchat() {
 //Loads vue for chat usage
 var vueapp;
 function start_vue() {
+	// RS Edit Start: Updated for Vue 3 (Lira, January 2026)
 	/* eslint-disable-next-line no-undef */ // Present in vue.min.js, imported in HTML
-	vueapp = new Vue({
-		el: '#app',
-		data: {
+	let app = Vue.createApp({
+		data: function() {
+			return {
+	// RS Edit End
 			messages: [], //List o messages from byond
 			shown_messages: [], //Used on filtered tabs, but not "Main" because it has 0len categories list, which bypasses filtering for speed
 			unshown_messages: 0, //How many messages in archive would be shown but aren't
@@ -438,7 +440,8 @@ function start_vue() {
 					required: false,
 					admin: false
 				}
-			],
+			]
+			};
 		},
 		mounted: function() {
 			//Load our settings
@@ -464,6 +467,7 @@ function start_vue() {
 			try {
 				window.addEventListener('scroll', this._boundScrollHandler, { passive: true });
 			} catch(error) {
+				void error; // RS Add: Vue 3 Migration (Lira, January 2026)
 				window.addEventListener('scroll', this._boundScrollHandler);
 			}
 			this.$nextTick((function() {
@@ -482,7 +486,7 @@ function start_vue() {
 			// RS Add End
 		},
 		// RS Add: Scrolling Support (Lira, September 2025)
-		beforeDestroy: function() {
+		beforeUnmount: function() { // RS Edit: Vue 3 Migration (Lira, January 2026)
 			if(this._boundScrollHandler) {
 				window.removeEventListener('scroll', this._boundScrollHandler);
 				this._boundScrollHandler = null;
@@ -760,6 +764,18 @@ function start_vue() {
 					this.paused = shouldPause;
 				}
 			},
+			// RS Add Start: Vue 3 Migration (Lira, January 2026)
+			schedule_autoscroll: function() {
+				if(this.editing || this.paused)
+					return;
+				let scrollAction = this.scroll_to_latest.bind(this);
+				if(typeof this.$nextTick === 'function') {
+					this.$nextTick(scrollAction);
+				} else {
+					setTimeout(scrollAction, 0);
+				}
+			},
+			// RS Add End
 			resume_autoscroll: function() {
 				let wasPaused = this.manual_paused || this.scroll_paused || this.paused;
 				this.manual_paused = false;
@@ -1151,6 +1167,7 @@ function start_vue() {
 				newmessage.id = ++vchat_state.lastId;
 				this.attempt_archive();
 				this.messages.push(newmessage);
+				this.schedule_autoscroll(); // RS Add: Vue 3 Migration (Lira, January 2026)
 			},
 			//Push an internally generated message into our array
 			internal_message: function(message) {
@@ -1161,6 +1178,7 @@ function start_vue() {
 				};
 				newmessage.id = ++vchat_state.lastId;
 				this.messages.push(newmessage);
+				this.schedule_autoscroll(); // RS Add: Vue 3 Migration (Lira, January 2026)
 			},
 			// RS Edit: Updated for new features (Lira, September 2025)
 			on_mouseup: function(event) {
@@ -1676,6 +1694,8 @@ function start_vue() {
 			}
 		}
 	});
+
+	vueapp = app.mount('#app'); // RS Add: Vue 3 Migration (Lira, January 2026)
 }
 
 /***********

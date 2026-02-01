@@ -46,6 +46,27 @@
 			],
 			"group": "build",
 			"label": "tgui: prettybuild"
+		},
+		// RS Add Start: VChat lint and uglify (Lira, January 2026)
+		{
+			"type": "shell",
+			"command": "npm install && npm run lint && npm run uglify",
+			"windows": {
+				"command": "cmd",
+				"args": [
+					"/c",
+					"npm install && npm run lint && npm run uglify"
+				]
+			},
+			"options": {
+				"cwd": "code/modules/vchat"
+			},
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"group": "build",
+			"label": "vchat: build"
 		}
+		// RS Add End
 	]
 }

@@ -603,7 +603,7 @@
 			if(isAI(usr))
 				var/mob/living/silicon/ai/AI = usr
 				AI.view_images()
-		if("Nearby Transparency")
+		if("Nearby Transparency")	//RS ADD START
 			if(isliving(usr))
 				var/mob/living/L = usr
 				if(L.client.toggle_nearby_transparency())
@@ -617,7 +617,7 @@
 					icon_state = "dontsee"
 				else
 					icon_state = "self"
-
+		//RS ADD END
 		else
 			return attempt_vr(src,"Click_vr",list(location,control,params)) //VOREStation Add - Additional things.
 	return 1

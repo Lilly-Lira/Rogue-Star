@@ -7,6 +7,10 @@
 	light_range = 6			// luminosity when on
 	light_color = "FF9933" // A slight yellow/orange color.
 
+/obj/item/device/flashlight/lantern/powerless	//RS ADD START - For SPOOKY EVENTS
+	persist_storable = FALSE	//Please do not save the unlimited lantern
+	power_usage = FALSE	//RS ADD END
+
 /*****************************Pickaxe********************************/
 
 /obj/item/weapon/pickaxe

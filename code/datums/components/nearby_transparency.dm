@@ -2,7 +2,7 @@
 // Created by Lira for Rogue Star February 2026: New system for transparency with close objects and effects //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define NEARBY_TRANSPARENCY_MASK_ICON_DEFAULT 'icons/effects/light_overlays/light_128.dmi'
+#define NEARBY_TRANSPARENCY_MASK_ICON_DEFAULT 'icons/effects/light_overlays/light_160.dmi'
 #define NEARBY_TRANSPARENCY_MASK_ICON_LOOK_FOCUS 'icons/effects/light_overlays/light_64.dmi'
 #define NEARBY_TRANSPARENCY_MASK_STATE "light"
 #define NEARBY_TRANSPARENCY_BLOCKED_CHUNK_STATE "nearby_blocked_chunk"
@@ -166,6 +166,7 @@ var/global/list/nearby_transparency_supported_mob_plane_obj_types = typecacheof(
 		M.client.images += hide
 
 	hide.appearance = O.appearance
+	hide.appearance_flags |= RESET_COLOR
 	hide.override = 1
 	hide.alpha = 1
 	hide.pixel_x = 0
@@ -183,6 +184,7 @@ var/global/list/nearby_transparency_supported_mob_plane_obj_types = typecacheof(
 		M.client.images += replacement
 
 	replacement.appearance = O.appearance
+	replacement.appearance_flags |= RESET_COLOR
 	if(_needs_mob_plane_replacement(O))
 		var/list/remapped_overlays = _copy_and_remap_special_plane_overlays(O.overlays)
 		if(remapped_overlays)
@@ -579,3 +581,4 @@ var/global/list/nearby_transparency_supported_mob_plane_obj_types = typecacheof(
 
 	var/datum/component/nearby_transparency/fade = M.LoadComponent(/datum/component/nearby_transparency)
 	fade.toggle()
+	return fade.active

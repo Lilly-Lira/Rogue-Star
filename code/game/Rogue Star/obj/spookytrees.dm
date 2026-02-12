@@ -8,7 +8,7 @@
 	pixel_x = -16
 	layer = MOB_LAYER
 	indestructable = TRUE
-//	color = "#2c0f1d"
+	color = "#3d172a"
 
 /obj/structure/flora/tree/spookytree/choose_icon_state()
 	return "[rand(1, 20)]"

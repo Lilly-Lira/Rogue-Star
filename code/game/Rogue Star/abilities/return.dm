@@ -7,8 +7,7 @@
 	var/datum/modifier/return_home/mod = get_modifier_of_type(/datum/modifier/return_home)
 
 	if(!mod)
-		if(tgui_alert(usr,"Would you like to register this location as your return point?","Return configuration",list("No","Yes")))
-			add_modifier(/datum/modifier/return_home)
+		register_home()
 	else
 		mod.home()
 
@@ -20,8 +19,7 @@
 	var/datum/modifier/return_home/mod = get_modifier_of_type(/datum/modifier/return_home)
 
 	if(!mod)
-		if(tgui_alert(usr,"Would you like to register this location as your return point?","Return configuration",list("No","Yes")) == "Yes")
-			add_modifier(/datum/modifier/return_home)
+		register_home()
 	else
 		mod.home_aoe()
 
@@ -30,7 +28,7 @@
 	set desc = "Allows you and anyone next to you to return to a designated location."
 	set category = "Abilities"
 
-	if(tgui_alert(usr,"Would you like to register this location as your return point?","Return configuration",list("No","Yes")))
+	if(tgui_alert(usr,"Would you like to register this location as your return point?","Return configuration",list("No","Yes")) == "Yes")
 		var/datum/modifier/return_home/mod = get_modifier_of_type(/datum/modifier/return_home)
 		if(!mod)
 			add_modifier(/datum/modifier/return_home)

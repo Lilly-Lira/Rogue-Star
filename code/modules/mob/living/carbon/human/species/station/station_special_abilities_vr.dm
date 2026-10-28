@@ -1405,20 +1405,6 @@
 	set category = "Abilities"
 	set desc = "Grab a target with any of your appendages!"
 
-	if(stat || paralysis || weakened || stunned) //No tongue flicking while stunned.
-		to_chat(src, "<span class='warning'>You can't do that in your current state.</span>")
-		return
-
-	if(world.time < appendage_last_time_used)
-		if(!handle_chameleon_blend_in()) //RS ADD - Allow long vore trait to be used with chameleon blend in trait!
-			return
-
-	appendage_last_time_used = world.time + 10 //Anti-spam.
-
-	if (!istype(src, /mob/living))
-		to_chat(src, "<span class='warning'>It doesn't work that way.</span>")
-		return
-
 	var/choice = tgui_alert(src, "Do you wish to change the color of your appendage, use it, change throw mode, or change targeting mode?", "Selection List", list("Use it", "Color", "Throw mode", "Targeting mode"))
 
 	if(!choice)
@@ -1442,7 +1428,29 @@
 		return
 
 mob/living/proc/use_appendage()
+
+	if(world.time < appendage_last_time_used)
+		to_chat(src, "<span class='warning'>Your appendage is resting!</span>")
+		return
+
+	appendage_last_time_used = world.time + 10 //Anti-spam.
+
+
+	if(stat || paralysis || weakened || stunned) //No tongue flicking while stunned.
+		to_chat(src, "<span class='warning'>You can't do that in your current state.</span>")
+		return
+
+	if (!istype(src, /mob/living))
+		to_chat(src, "<span class='warning'>It doesn't work that way.</span>")
+		return
+
+	var/datum/modifier/blend_in/B = handle_chameleon_blend_in()
+
+	if(!B)
+		return
+
 	var/mob/living/target
+
 	if(appendage_targeting_mode == "Select from List")
 		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
 		for(var/mob/living/L in range(5, src))
@@ -1499,7 +1507,7 @@ mob/living/proc/use_appendage()
 	//Code to shoot the beam here.
 	var/obj/item/projectile/beam/appendage/appendage_attack = new /obj/item/projectile/beam/appendage(get_turf(loc))
 	appendage_attack.launch_projectile(target, BP_TORSO, src) //Send it.
-	last_special = world.time + 100 //Cooldown for successful strike.
+	appendage_last_time_used = world.time + 100 //Cooldown for successful strike.
 	if(B)	//RS ADD
 		B.expire()	//RS ADD
 
@@ -1552,9 +1560,7 @@ mob/living/proc/handle_chameleon_blend_in()
 	for(var/datum/modifier/M in modifiers)
 		if(M.type == /datum/modifier/blend_in)
 			B = M
-			return true
-	to_chat(src, "<span class='warning'>Your appendage is resting!</span>")
-	return false
+	return B
 
 /obj/item/projectile/beam/appendage //The tongue projecitle.
 	name = "appendage"

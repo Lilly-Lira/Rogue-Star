@@ -1431,13 +1431,25 @@
 	if(choice == "Color") //Easy way to set color so we don't bloat up the menu with even more buttons.
 		var/new_color = input(usr, "Choose a color to set your appendage to!", "", appendage_color) as color|null
 		if(new_color)
+			to_chat(src, "<span class='info'>New color set!</span>")
 			appendage_color = new_color
+			return
+		else
+			to_chat(src, "<span class='notice'>No change made, and a Color has not been set.</span>")
+			return
 	if(choice == "Functionality") //Easy way to set color so we don't bloat up the menu with even more buttons.
 		var/choice2 = tgui_alert(usr, "Choose if you want to be pulled to the target or pull them to you!", "Functionality Setting", list("Pull target to self", "Pull self to target"))
+		if(!choice2)
+			to_chat(src, "<span class='notice'>No change made. Current pull mode is set to [appendage_alt_setting ? "\"Pull self to target\"" : "\"Pull target to self\""].</span>")
+			return
 		if(choice2 == "Pull target to self")
+			to_chat(src, "<span class='notice'>Current pull mode has been set to \"Pull target to self\".</span>")
 			appendage_alt_setting = 0
+			return
 		else
+			to_chat(src, "<span class='notice'>Current pull mode has been set to \"Pull self to target\"</span>")
 			appendage_alt_setting = 1
+			return
 	else
 		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
 

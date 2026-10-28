@@ -1419,7 +1419,7 @@
 		to_chat(src, "<span class='warning'>It doesn't work that way.</span>")
 		return
 
-	var/choice = tgui_alert(src, "Do you wish to change the color of your appendage, use it, or change throw mode?", "Selection List", list("Use it", "Color", "Throw mode"))
+	var/choice = tgui_alert(src, "Do you wish to change the color of your appendage, use it, change throw mode, or change targeting mode?", "Selection List", list("Use it", "Color", "Throw mode", "Targeting mode"))
 
 	if(!choice)
 		return //Nothing happens
@@ -1431,6 +1431,9 @@
 	if(choice == "Throw mode")
 		set_appendage_throw_mode_prompt()
 		return
+
+	if(choice == "Targeting mode")
+		set_appendage_targeting_mode_prompt()
 
 	if(choice == "Use it")
 		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
@@ -1496,6 +1499,23 @@ mob/living/proc/set_appendage_throw_mode_prompt()
 	if(choice == "Pull self to target")
 		to_chat(src, "<span class='notice'>Current pull mode has been set to \"Pull self to target\"</span>")
 		appendage_alt_setting = 1
+		return
+	else
+		to_chat(src, "<span class='warning'>No change made. Something went wrong. Ping a developer.</span>")
+		return
+
+mob/living/proc/set_appendage_targeting_mode_prompt()
+	var/choice = tgui_alert(usr, "Select a targeting mode. Current mode: [appendage_targeting_mode].", "Targeting mode", list("Select from list", "Target closest"))
+	if(!choice)
+		to_chat(src, "<span class='notice'>No change made to targeting mode.</span>")
+		return
+	if(choice == "Select from list")
+		to_chat(src, "<span class='notice'>Current targeting mode has been set to \"Select from list\".</span>")
+		appendage_targeting_mode = "Select from list"
+		return
+	if(choice == "Target closest")
+		to_chat(src, "<span class='notice'>Current pull mode has been set to \"Target closest\"</span>")
+		appendage_targeting_mode = "Target closest"
 		return
 	else
 		to_chat(src, "<span class='warning'>No change made. Something went wrong. Ping a developer.</span>")

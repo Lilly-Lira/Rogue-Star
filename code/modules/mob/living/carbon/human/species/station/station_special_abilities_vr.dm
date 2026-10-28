@@ -1496,10 +1496,21 @@
 				counter += 1
 				continue
 
-			if (get_dist(src,target) >= 6) // Moved out of range. Could be redundant.
+			if (get_dist(src,target) >= 6) // Moved out of range, move on.
 				counter += 1
 				continue
 			break
+	if(!target)
+		to_chat(src, "<span class='notice'>No eligible targets found.</span>")
+		return
+
+	if(!istype(target, /mob/living)) //Safety.
+		to_chat(src, "<span class='warning'>You need to select a living target!</span>")
+		return
+
+	if (get_dist(src,target) >= 6)
+		to_chat(src, "<span class='warning'>You need to be closer to do that.</span>")
+		return
 
 	visible_message("<span class='notice'>\The [src] attempts to snatch up [target]!</span>", \
 					"<span class='notice'>You attempt to snatch up [target]!</span>" )

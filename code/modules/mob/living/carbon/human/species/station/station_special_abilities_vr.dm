@@ -1436,8 +1436,15 @@
 		set_appendage_targeting_mode_prompt()
 
 	if(choice == "Use it")
-		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
+		use_appendage()
+	else
+		to_chat(src, "<span class='warning'>Selection invalid. Something went wrong. Ping a developer.</span>")
+		return
 
+mob/living/proc/use_appendage()
+	var/mob/living/target
+	if(appendage_targeting_mode == "Select from List")
+		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
 		for(var/mob/living/L in range(5, src))
 			if(!istype(L, /mob/living)) //Don't eat anything that isn't mob/living. Failsafe.
 				continue
@@ -1450,32 +1457,51 @@
 			to_chat(src, "<span class='notice'>No eligible targets found.</span>")
 			return
 
-		var/mob/living/target = tgui_input_list(src, "Please select a target.", "Victim", targets)
+		target = tgui_input_list(src, "Please select a target.", "Victim", targets)
 
-		if(!target)
+	if(appendage_targeting_mode == "Target closest")
+		var/list/targets = list()
+
+		for(var/mob/living/L in range(5, src))
+			if(!istype(L, /mob/living)) //Don't eat anything that isn't mob/living. Failsafe.
+				continue
+			if(L == src) //no eating yourself. 1984.
+				continue
+			if(spont_pref_check(src,L,THROW_VORE) || spont_pref_check(L,src,THROW_VORE))
+				targets += L
+
+		if(!(targets.len)) // List empty
+			to_chat(src, "<span class='notice'>No eligible targets found.</span>")
 			return
 
-		if(!istype(target, /mob/living)) //Safety.
-			to_chat(src, "<span class='warning'>You need to select a living target!</span>")
-			return
+		var/mob/living/counter = 1
+		target = targets[counter]
 
-		if (get_dist(src,target) >= 6)
-			to_chat(src, "<span class='warning'>You need to be closer to do that.</span>")
-			return
+		while(target)
+			target = targets[counter]
+			if(!target) // Catch out of bounds exception
+				to_chat(src, "<span class='notice'>No eligible targets found.</span>")
+				return
 
-		visible_message("<span class='notice'>\The [src] attempts to snatch up [target]!</span>", \
-						"<span class='notice'>You attempt to snatch up [target]!</span>" )
-		playsound(src, 'sound/vore/sunesound/pred/schlorp.ogg', 25)
+			if(!istype(target, /mob/living)) //Safety.
+				counter += 1
+				continue
 
-		//Code to shoot the beam here.
-		var/obj/item/projectile/beam/appendage/appendage_attack = new /obj/item/projectile/beam/appendage(get_turf(loc))
-		appendage_attack.launch_projectile(target, BP_TORSO, src) //Send it.
-		last_special = world.time + 100 //Cooldown for successful strike.
-		if(B)	//RS ADD
-			B.expire()	//RS ADD
-	else
-		to_chat(src, "<span class='warning'>Selection invalid. Something went wrong. Ping a developer.</span>")
-		return
+			if (get_dist(src,target) >= 6) // Moved out of range. Could be redundant.
+				counter += 1
+				continue
+			break
+
+	visible_message("<span class='notice'>\The [src] attempts to snatch up [target]!</span>", \
+					"<span class='notice'>You attempt to snatch up [target]!</span>" )
+	playsound(src, 'sound/vore/sunesound/pred/schlorp.ogg', 25)
+
+	//Code to shoot the beam here.
+	var/obj/item/projectile/beam/appendage/appendage_attack = new /obj/item/projectile/beam/appendage(get_turf(loc))
+	appendage_attack.launch_projectile(target, BP_TORSO, src) //Send it.
+	last_special = world.time + 100 //Cooldown for successful strike.
+	if(B)	//RS ADD
+		B.expire()	//RS ADD
 
 mob/living/proc/set_appendage_color_prompt()
 	var/new_color = input(usr, "Choose a color to set your appendage to!", "", appendage_color) as color|null

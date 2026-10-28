@@ -1409,8 +1409,9 @@
 		to_chat(src, "<span class='warning'>You can't do that in your current state.</span>")
 		return
 
+	//RS ADD - Allow long vore trait to be used with chameleon blend in trait!
 	var/datum/modifier/blend_in/B	//RS ADD START - Allow long vore trait to be used with chameleon blend in trait!
-	if(world.time < last_special)
+	if(world.time < appendage_last_time_used)
 		var/dunnit = FALSE
 		for(var/datum/modifier/M in modifiers)
 			if(M.type == /datum/modifier/blend_in)
@@ -1420,7 +1421,7 @@
 			to_chat(src, "<span class='warning'>You can't do that in your current state.</span>")
 			return	//RS ADD END
 
-	last_special = world.time + 10 //Anti-spam.
+	appendage_last_time_used = world.time + 10 //Anti-spam.
 
 	if (!istype(src, /mob/living))
 		to_chat(src, "<span class='warning'>It doesn't work that way.</span>")
@@ -1429,27 +1430,11 @@
 	var/choice = tgui_alert(src, "Do you wish to change the color of your appendage, use it, or change its functionality?", "Selection List", list("Use it", "Color", "Functionality"))
 
 	if(choice == "Color") //Easy way to set color so we don't bloat up the menu with even more buttons.
-		var/new_color = input(usr, "Choose a color to set your appendage to!", "", appendage_color) as color|null
-		if(new_color)
-			to_chat(src, "<span class='info'>New color set!</span>")
-			appendage_color = new_color
-			return
-		else
-			to_chat(src, "<span class='notice'>No change made, and a Color has not been set.</span>")
-			return
+		set_appendage_color_prompt()
+		return
 	if(choice == "Functionality") //Easy way to set color so we don't bloat up the menu with even more buttons.
-		var/choice2 = tgui_alert(usr, "Choose if you want to be pulled to the target or pull them to you!", "Functionality Setting", list("Pull target to self", "Pull self to target"))
-		if(!choice2)
-			to_chat(src, "<span class='notice'>No change made. Current pull mode is set to [appendage_alt_setting ? "\"Pull self to target\"" : "\"Pull target to self\""].</span>")
-			return
-		if(choice2 == "Pull target to self")
-			to_chat(src, "<span class='notice'>Current pull mode has been set to \"Pull target to self\".</span>")
-			appendage_alt_setting = 0
-			return
-		else
-			to_chat(src, "<span class='notice'>Current pull mode has been set to \"Pull self to target\"</span>")
-			appendage_alt_setting = 1
-			return
+		set_appendage_throw_mode_prompt()
+		return
 	else
 		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
 
@@ -1488,6 +1473,33 @@
 		last_special = world.time + 100 //Cooldown for successful strike.
 		if(B)	//RS ADD
 			B.expire()	//RS ADD
+
+mob/living/proc/set_appendage_color_prompt()
+	var/new_color = input(usr, "Choose a color to set your appendage to!", "", appendage_color) as color|null
+	if(new_color)
+		to_chat(src, "<span class='info'>New color set!</span>")
+		appendage_color = new_color
+		return
+	else
+		to_chat(src, "<span class='notice'>No change made, and a Color has not been set.</span>")
+		return
+
+mob/living/proc/set_appendage_throw_mode_prompt()
+	var/choice = tgui_alert(usr, "Choose if you want to be pulled to the target or pull them to you!", "Functionality Setting", list("Pull target to self", "Pull self to target"))
+	if(!choice)
+		to_chat(src, "<span class='notice'>No change made. Current pull mode is set to [appendage_alt_setting ? "\"Pull self to target\"" : "\"Pull target to self\""].</span>")
+		return
+	if(choice == "Pull target to self")
+		to_chat(src, "<span class='notice'>Current pull mode has been set to \"Pull target to self\".</span>")
+		appendage_alt_setting = 0
+		return
+	if(choice == "Pull self to target")
+		to_chat(src, "<span class='notice'>Current pull mode has been set to \"Pull self to target\"</span>")
+		appendage_alt_setting = 1
+		return
+	else
+		to_chat(src, "<span class='warning'>No change made. Something went wrong. Ping a developer.</span>")
+		return
 
 /obj/item/projectile/beam/appendage //The tongue projecitle.
 	name = "appendage"

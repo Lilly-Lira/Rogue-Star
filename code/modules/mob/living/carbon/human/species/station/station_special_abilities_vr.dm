@@ -1427,7 +1427,7 @@
 		to_chat(src, "<span class='warning'>Selection invalid. Something went wrong. Ping a developer.</span>")
 		return
 
-mob/living/proc/use_appendage()
+/mob/living/proc/use_appendage()
 
 	if(world.time < appendage_last_time_used)
 		to_chat(src, "<span class='warning'>Your appendage is resting!</span>")
@@ -1511,7 +1511,7 @@ mob/living/proc/use_appendage()
 	if(B)	//RS ADD
 		B.expire()	//RS ADD
 
-mob/living/proc/set_appendage_color_prompt()
+/mob/living/proc/set_appendage_color_prompt()
 	var/new_color = input(usr, "Choose a color to set your appendage to!", "", appendage_color) as color|null
 	if(new_color)
 		to_chat(src, "<span class='info'>New color set!</span>")
@@ -1521,7 +1521,7 @@ mob/living/proc/set_appendage_color_prompt()
 		to_chat(src, "<span class='notice'>No change made, and a Color has not been set.</span>")
 		return
 
-mob/living/proc/set_appendage_throw_mode_prompt()
+/mob/living/proc/set_appendage_throw_mode_prompt()
 	var/choice = tgui_alert(usr, "Choose if you want to be pulled to the target or pull them to you. Current pull mode is set to [appendage_alt_setting ? "\"Pull self to target\"" : "\"Pull target to self\""].", "Functionality Setting", list("Pull target to self", "Pull self to target"))
 	if(!choice)
 		to_chat(src, "<span class='notice'>No change made.</span>")
@@ -1538,7 +1538,7 @@ mob/living/proc/set_appendage_throw_mode_prompt()
 		to_chat(src, "<span class='warning'>No change made. Something went wrong. Ping a developer.</span>")
 		return
 
-mob/living/proc/set_appendage_targeting_mode_prompt()
+/mob/living/proc/set_appendage_targeting_mode_prompt()
 	var/choice = tgui_alert(usr, "Select a targeting mode. Current mode: [appendage_targeting_mode].", "Targeting mode", list("Select from list", "Target closest"))
 	if(!choice)
 		to_chat(src, "<span class='notice'>No change made to targeting mode.</span>")
@@ -1555,7 +1555,7 @@ mob/living/proc/set_appendage_targeting_mode_prompt()
 		to_chat(src, "<span class='warning'>No change made. Something went wrong. Ping a developer.</span>")
 		return
 
-mob/living/proc/handle_chameleon_blend_in()
+/mob/living/proc/handle_chameleon_blend_in()
 	var/datum/modifier/blend_in/B
 	for(var/datum/modifier/M in modifiers)
 		if(M.type == /datum/modifier/blend_in)

@@ -1410,18 +1410,18 @@
 	if(!choice)
 		return //Nothing happens
 
-	if(choice == "Color") //Easy way to set color so we don't bloat up the menu with even more buttons.
+	else if(choice == "Color") //Easy way to set color so we don't bloat up the menu with even more buttons.
 		set_appendage_color_prompt()
 		return
 
-	if(choice == "Throw mode")
+	else if(choice == "Throw mode")
 		set_appendage_throw_mode_prompt()
 		return
 
-	if(choice == "Targeting mode")
+	else if(choice == "Targeting mode")
 		set_appendage_targeting_mode_prompt()
 
-	if(choice == "Use it")
+	else if(choice == "Use it")
 		use_appendage()
 	else
 		to_chat(src, "<span class='warning'>Selection invalid. Something went wrong. Ping a developer.</span>")
@@ -1447,6 +1447,7 @@
 	var/datum/modifier/blend_in/B = handle_chameleon_blend_in()
 
 	if(!B)
+		to_chat(src, "<span class='warning'>Something is wrong with Chameleon stuff. Yellow fox, Help!</span>")
 		return
 
 	var/mob/living/target

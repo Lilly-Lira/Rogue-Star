@@ -1421,13 +1421,18 @@
 
 	var/choice = tgui_alert(src, "Do you wish to change the color of your appendage, use it, or change its functionality?", "Selection List", list("Use it", "Color", "Functionality"))
 
+	if(!choice)
+		return //Nothing happens
+
 	if(choice == "Color") //Easy way to set color so we don't bloat up the menu with even more buttons.
 		set_appendage_color_prompt()
 		return
+
 	if(choice == "Functionality") //Easy way to set color so we don't bloat up the menu with even more buttons.
 		set_appendage_throw_mode_prompt()
 		return
-	else
+
+	if(choice == "Use it")
 		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
 
 		for(var/mob/living/L in range(5, src))
@@ -1465,6 +1470,9 @@
 		last_special = world.time + 100 //Cooldown for successful strike.
 		if(B)	//RS ADD
 			B.expire()	//RS ADD
+	else
+		to_chat(src, "<span class='warning'>Selection invalid. Something went wrong. Ping a developer.</span>")
+		return
 
 mob/living/proc/set_appendage_color_prompt()
 	var/new_color = input(usr, "Choose a color to set your appendage to!", "", appendage_color) as color|null

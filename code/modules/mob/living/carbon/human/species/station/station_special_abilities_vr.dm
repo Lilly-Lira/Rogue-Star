@@ -1514,9 +1514,9 @@ mob/living/proc/set_appendage_color_prompt()
 		return
 
 mob/living/proc/set_appendage_throw_mode_prompt()
-	var/choice = tgui_alert(usr, "Choose if you want to be pulled to the target or pull them to you!", "Functionality Setting", list("Pull target to self", "Pull self to target"))
+	var/choice = tgui_alert(usr, "Choose if you want to be pulled to the target or pull them to you. Current pull mode is set to [appendage_alt_setting ? "\"Pull self to target\"" : "\"Pull target to self\""].", "Functionality Setting", list("Pull target to self", "Pull self to target"))
 	if(!choice)
-		to_chat(src, "<span class='notice'>No change made. Current pull mode is set to [appendage_alt_setting ? "\"Pull self to target\"" : "\"Pull target to self\""].</span>")
+		to_chat(src, "<span class='notice'>No change made.</span>")
 		return
 	if(choice == "Pull target to self")
 		to_chat(src, "<span class='notice'>Current pull mode has been set to \"Pull target to self\".</span>")

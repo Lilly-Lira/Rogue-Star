@@ -1409,17 +1409,9 @@
 		to_chat(src, "<span class='warning'>You can't do that in your current state.</span>")
 		return
 
-	//RS ADD - Allow long vore trait to be used with chameleon blend in trait!
-	var/datum/modifier/blend_in/B	//RS ADD START - Allow long vore trait to be used with chameleon blend in trait!
 	if(world.time < appendage_last_time_used)
-		var/dunnit = FALSE
-		for(var/datum/modifier/M in modifiers)
-			if(M.type == /datum/modifier/blend_in)
-				B = M
-				dunnit = TRUE
-		if(!dunnit)
-			to_chat(src, "<span class='warning'>You can't do that in your current state.</span>")
-			return	//RS ADD END
+		if(!handle_chameleon_blend_in()) //RS ADD - Allow long vore trait to be used with chameleon blend in trait!
+			return
 
 	appendage_last_time_used = world.time + 10 //Anti-spam.
 
@@ -1500,6 +1492,15 @@ mob/living/proc/set_appendage_throw_mode_prompt()
 	else
 		to_chat(src, "<span class='warning'>No change made. Something went wrong. Ping a developer.</span>")
 		return
+
+mob/living/proc/handle_chameleon_blend_in()
+	var/datum/modifier/blend_in/B
+	for(var/datum/modifier/M in modifiers)
+		if(M.type == /datum/modifier/blend_in)
+			B = M
+			return true
+	to_chat(src, "<span class='warning'>Your appendage is resting!</span>")
+	return false
 
 /obj/item/projectile/beam/appendage //The tongue projecitle.
 	name = "appendage"

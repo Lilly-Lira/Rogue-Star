@@ -1446,13 +1446,13 @@
 
 	var/datum/modifier/blend_in/B = handle_chameleon_blend_in()
 
-	if(!B)
-		to_chat(src, "<span class='warning'>Something is wrong with Chameleon stuff. Yellow fox, Help!</span>")
-		return
+	//if(!B)
+	//	to_chat(src, "<span class='warning'>Something is wrong with Chameleon stuff. Yellow fox, Help!</span>")
+	//	return
 
 	var/mob/living/target
 
-	if(appendage_targeting_mode == "Select from List")
+	if(appendage_targeting_mode == "Select from list")
 		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
 		for(var/mob/living/L in range(5, src))
 			if(!istype(L, /mob/living)) //Don't eat anything that isn't mob/living. Failsafe.

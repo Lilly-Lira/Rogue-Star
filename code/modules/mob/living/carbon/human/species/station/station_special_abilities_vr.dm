@@ -1419,7 +1419,7 @@
 		to_chat(src, "<span class='warning'>It doesn't work that way.</span>")
 		return
 
-	var/choice = tgui_alert(src, "Do you wish to change the color of your appendage, use it, or change its functionality?", "Selection List", list("Use it", "Color", "Functionality"))
+	var/choice = tgui_alert(src, "Do you wish to change the color of your appendage, use it, or change throw mode?", "Selection List", list("Use it", "Color", "Throw mode"))
 
 	if(!choice)
 		return //Nothing happens
@@ -1428,7 +1428,7 @@
 		set_appendage_color_prompt()
 		return
 
-	if(choice == "Functionality") //Easy way to set color so we don't bloat up the menu with even more buttons.
+	if(choice == "Throw mode")
 		set_appendage_throw_mode_prompt()
 		return
 

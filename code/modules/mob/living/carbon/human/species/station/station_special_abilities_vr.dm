@@ -1432,11 +1432,11 @@
 	set category = "Abilities"
 	set desc = "Grab a target with any of your appendages!"
 
-	if(world.time < appendage_last_time_used)
-		to_chat(src, "<span class='warning'>Your appendage is resting!</span>")
+	if(world.time < last_special)
+		to_chat(src, "<span class='warning'>You've used a special move too recently! Your appendage is resting!</span>")
 		return
 
-	appendage_last_time_used = world.time + 10 //Anti-spam.
+	last_special = world.time + 10 //Anti-spam.
 
 
 	if(stat || paralysis || weakened || stunned) //No tongue flicking while stunned.
@@ -1522,7 +1522,7 @@
 	//Code to shoot the beam here.
 	var/obj/item/projectile/beam/appendage/appendage_attack = new /obj/item/projectile/beam/appendage(get_turf(loc))
 	appendage_attack.launch_projectile(target, BP_TORSO, src) //Send it.
-	appendage_last_time_used = world.time + 100 //Cooldown for successful strike.
+	last_special = world.time + 100 //Cooldown for successful strike.
 	if(B)	//RS ADD
 		B.expire()	//RS ADD
 

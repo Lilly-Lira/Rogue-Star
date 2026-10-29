@@ -1401,9 +1401,9 @@
 //It can also be recolored via the proc, which persists between rounds.
 
 /mob/living/proc/long_vore() // Allows the user to tongue grab a creature in range. Made a /living proc so frogs can frog you.
-	set name = "Grab Prey With Appendage"
+	set name = "Appendage Menu"
 	set category = "Abilities"
-	set desc = "Grab a target with any of your appendages!"
+	set desc = "Opens the appendage menu."
 
 	var/choice = tgui_alert(src, "Do you wish to change the color of your appendage, use it, change throw mode, or change targeting mode?", "Selection List", list("Use it", "Color", "Throw mode", "Targeting mode"))
 
@@ -1428,6 +1428,9 @@
 		return
 
 /mob/living/proc/use_appendage()
+	set name = "Grab Prey With Appendage"
+	set category = "Abilities"
+	set desc = "Grab a target with any of your appendages!"
 
 	if(world.time < appendage_last_time_used)
 		to_chat(src, "<span class='warning'>Your appendage is resting!</span>")

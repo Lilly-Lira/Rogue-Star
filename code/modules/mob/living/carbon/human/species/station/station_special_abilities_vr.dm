@@ -1432,7 +1432,7 @@
 	set category = "Abilities"
 	set desc = "Grab a target with any of your appendages!"
 
-	if(world.time < last_special)
+	if(world.time < last_special && !handle_chameleon_blend_in())
 		to_chat(src, "<span class='warning'>You've used a special move too recently! Your appendage is resting!</span>")
 		return
 
@@ -1457,7 +1457,7 @@
 
 	if(appendage_targeting_mode == "Select from list")
 		var/list/targets = list() //IF IT IS NOT BROKEN. DO NOT FIX IT.
-		for(var/mob/living/L in range(5, src))
+		for(var/mob/living/L in view(5, src))
 			if(!istype(L, /mob/living)) //Don't eat anything that isn't mob/living. Failsafe.
 				continue
 			if(L == src) //no eating yourself. 1984.
@@ -1474,10 +1474,12 @@
 	if(appendage_targeting_mode == "Target closest")
 		var/list/targets = list()
 
-		for(var/mob/living/L in range(5, src))
+		for(var/mob/living/L in view(5, src))
 			if(!istype(L, /mob/living)) //Don't eat anything that isn't mob/living. Failsafe.
 				continue
 			if(L == src) //no eating yourself. 1984.
+				continue
+			if(!(L in check_trajectory(L, src, PASSTABLE)))
 				continue
 			if(spont_pref_check(src,L,THROW_VORE) || spont_pref_check(L,src,THROW_VORE))
 				targets += L
